@@ -26,7 +26,6 @@ import org.sunbird.common.exception.ProjectCommonException;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.util.HttpUtil;
 import org.sunbird.common.models.util.JsonKey;
-import org.sunbird.common.models.util.LoggerEnum;
 import org.sunbird.common.models.util.ProjectLogger;
 import org.sunbird.common.models.util.ProjectUtil;
 import org.sunbird.common.models.util.PropertiesCache;
@@ -42,7 +41,6 @@ public abstract class BaseMetricsActor extends UntypedAbstractActor {
   
   private static ObjectMapper mapper = new ObjectMapper();
 
-  protected abstract Map<String, Object> getViewData(String id, Object data);
   public static final String startDate = "startDate";
   public static final String endDate = "endDate";
   public static final String startTimeMilis = "startTimeMilis";
@@ -62,7 +60,6 @@ public abstract class BaseMetricsActor extends UntypedAbstractActor {
   protected static final String FILENAMESEPARATOR = "_";
   protected static final MetricsCache cache = new MetricsCache();
   private static final String Charsets_UTF_8 = "UTF-8";
-  SimpleDateFormat format = ProjectUtil.format;
   
 
   protected Map<String, Object> addSnapshot(String keyName, String name, Object value,
