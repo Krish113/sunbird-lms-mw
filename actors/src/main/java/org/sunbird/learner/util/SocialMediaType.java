@@ -141,7 +141,9 @@ public class SocialMediaType {
             ResponseCode.CLIENT_ERROR.getResponseCode());
       }
       String mediaType = socialMedia.get(JsonKey.TYPE);
+      //Checking in variable for media types
       if(!SocialMediaType.getMediaTypes().containsKey(mediaType)){
+        //If not found pulling latest media types from cassandra to variable and checking again
         SocialMediaType.updateCache();
         if(!SocialMediaType.getMediaTypes().containsKey(mediaType)){
           throw new ProjectCommonException(ResponseCode.invalidMediaType.getErrorCode(),

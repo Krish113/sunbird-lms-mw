@@ -942,8 +942,8 @@ public class UserManagementActor extends UntypedAbstractActor {
   private Response loginWithEmail(String email) throws Exception {
     Util.DbInfo userDbInfo = Util.dbInfoMap.get(JsonKey.USER_DB);
     return cassandraOperation.getRecordsByProperty(userDbInfo.getKeySpace(),
-        userDbInfo.getTableName(), JsonKey.EMAIL,
-        encryptionService.encryptData(email));
+            userDbInfo.getTableName(), JsonKey.EMAIL,
+            encryptionService.encryptData(email));
   }
   
   /**
@@ -1356,9 +1356,12 @@ public class UserManagementActor extends UntypedAbstractActor {
     Util.DbInfo orgDb = Util.dbInfoMap.get(JsonKey.ORG_DB);
     Util.DbInfo usrExtIdDb = Util.dbInfoMap.get(JsonKey.USR_EXT_ID_DB);
     ProjectLogger.log("collected all the DB setup..");
+    //Fecthing the entire request including REQUESTED BY and the actual JSON request
     Map<String, Object> req = actorMessage.getRequest();
     Map<String, Object> requestMap = null;
+    //Extracting the actual JSON request
     Map<String, Object> userMap = (Map<String, Object>) req.get(JsonKey.USER);
+    // Uses Elastic Search for validating phone number uniqueness
     checkPhoneUniqueness(userMap,JsonKey.CREATE);
     Map<String, Object> emailTemplateMap = new HashMap<>(userMap);
     if (userMap.containsKey(JsonKey.WEB_PAGES)) {
@@ -1534,6 +1537,7 @@ public class UserManagementActor extends UntypedAbstractActor {
       emailTemplateMap.put(JsonKey.TEMPORARY_PASSWORD, tempPassword);
     }
     try {
+      //TODO: Verify this
       UserUtility.encryptUserData(userMap);
     } catch (Exception e1) {
       ProjectCommonException exception =
