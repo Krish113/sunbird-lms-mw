@@ -295,6 +295,7 @@ public class CourseBatchManagementActor extends UntypedAbstractActor {
         (Map<String, String>) actorMessage.getRequest().get(JsonKey.HEADER);
     String courseId = (String) req.get(JsonKey.COURSE_ID);
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    // Checking if the course is published in EkStep
     Map<String, Object> ekStepContent =
         CourseEnrollmentActor.getCourseObjectFromEkStep(courseId, headers);
     if (null == ekStepContent || ekStepContent.size() == 0) {
@@ -326,7 +327,7 @@ public class CourseBatchManagementActor extends UntypedAbstractActor {
         Map<String, Object> result =
             ElasticSearchUtil.getDataByIdentifier(ProjectUtil.EsIndex.sunbird.getIndexName(),
                 ProjectUtil.EsType.user.getTypeName(), userId);
-        // check whether is_deletd true or false
+        // check whether is_deleted true or false
         if ((ProjectUtil.isNull(result)) || (ProjectUtil.isNotNull(result) && result.isEmpty())
             || (ProjectUtil.isNotNull(result) && result.containsKey(JsonKey.IS_DELETED)
                 && ProjectUtil.isNotNull(result.get(JsonKey.IS_DELETED))

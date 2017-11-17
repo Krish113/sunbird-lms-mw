@@ -61,13 +61,14 @@ public class CourseEnrollmentActor extends UntypedAbstractActor {
                 batchDbInfo.getTableName(), (String) courseMap.get(JsonKey.BATCH_ID));
             List<Map<String, Object>> responseList =
                 (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
+            // Checking batch existence
             if (responseList.isEmpty()) {
               throw new ProjectCommonException(ResponseCode.invalidCourseBatchId.getErrorCode(),
                   ResponseCode.invalidCourseBatchId.getErrorMessage(),
                   ResponseCode.CLIENT_ERROR.getResponseCode());
             }
           }
-          // check whether user already enroll for course
+          // check whether user already enroll for same course same batch
           Response dbResult = cassandraOperation.getRecordById(courseEnrollmentdbInfo.getKeySpace(),
               courseEnrollmentdbInfo.getTableName(), generateUserCoursesPrimaryKey(courseMap));
           List<Map<String, Object>> dbList =
@@ -81,7 +82,7 @@ public class CourseEnrollmentActor extends UntypedAbstractActor {
             sender().tell(exception, self());
             return;
           }
-
+          // Check if the course is published in EkStep
           Map<String, String> headers =
               (Map<String, String>) actorMessage.getRequest().get(JsonKey.HEADER);
           String courseId = (String) courseMap.get(JsonKey.COURSE_ID);

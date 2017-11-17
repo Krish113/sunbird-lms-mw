@@ -1277,7 +1277,7 @@ public class OrganisationManagementActor extends UntypedAbstractActor {
 
     List orgList = (List) orgResult.get(JsonKey.RESPONSE);
     if (orgList.size() == 0) {
-      // user already enrolled for the organisation
+      // organization does not exists
       ProjectLogger.log("Org does not exist");
       ProjectCommonException exception = new ProjectCommonException(
           ResponseCode.invalidOrgId.getErrorCode(), ResponseCode.invalidOrgId.getErrorMessage(),
@@ -1400,7 +1400,7 @@ public class OrganisationManagementActor extends UntypedAbstractActor {
 
     List<Map<String, Object>> list = (List<Map<String, Object>>) result.get(JsonKey.RESPONSE);
     if (list.size() == 0) {
-      // user already enrolled for the organisation
+      // user is not enrolled for the organisation
       ProjectLogger.log("User does not belong to org");
       ProjectCommonException exception = new ProjectCommonException(
           ResponseCode.invalidOrgId.getErrorCode(), ResponseCode.invalidOrgId.getErrorMessage(),
@@ -1495,7 +1495,7 @@ public class OrganisationManagementActor extends UntypedAbstractActor {
 
     List<Map<String, Object>> list = (List<Map<String, Object>>) result.get(JsonKey.RESPONSE);
     if (list.size() == 0) {
-      // user already enrolled for the organisation
+      // user is not enrolled for the organisation
       ProjectLogger.log("User does not belong to org");
       ProjectCommonException exception = new ProjectCommonException(
           ResponseCode.invalidOrgId.getErrorCode(), ResponseCode.invalidOrgId.getErrorMessage(),
